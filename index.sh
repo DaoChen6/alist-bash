@@ -24,7 +24,7 @@ remind='\e[34m
 \r\n                        Alist 一键部署脚本\r\n
   Alist是一款阿里云盘的目录文件列表程序，后端基于golang最好的http框架gin\r
   前端使用vue和ant design\r  项目地址：https://github.com/Xhofe/alist\r\n
-                                         Script by 道辰 www.iflm.ml
+                                        Script by 道辰 www.iflm.ml\r\n
 ==========================================================================
 \e[0m';
 
@@ -108,9 +108,9 @@ else
     curl -L https://nodejs.org/dist/v$NODEJS_VERSION/node-v$NODEJS_VERSION-linux-x64.tar.xz -o /tmp/node-v$NODEJS_VERSION-linux-x64.tar.xz $CURL_BAR
 fi
 
-tar xf /tmp/node-v$NODEJS_VERSION-linux-x64.tar.xz -C /tmp/
-export PATH="/tmp/node-v${NODEJS_VERSION}-linux-x64/bin:$PATH"
-
+tar xf
+ /tmp/node-v$NODEJS_VERSION-linux-x64.tar.xz -C /tmp/
+export PATH="/tmp/node-v$NODEJS_VERSION-linux-x64/bin:$PATH"
 # 根据地域设置 npm 镜像源
 if [ $isCN = "CN" ];then
     npm config set registry https://registry.npmmirror.com
