@@ -80,7 +80,7 @@ fi
 echo -e "\r\n${green_color} 安装Go … ${default_color}"
 curl -L https://dl.google.com/go/go$GO_VERSION.linux-amd64.tar.gz -o /tmp/go$GO_VERSION.linux-amd64.tar.gz $CURL_BAR
 tar -zxvf /tmp/go$GO_VERSION.linux-amd64.tar.gz -C /tmp/
-mkdir /tmp/go/tmp
+mkdir -p /tmp/go/tmp
 export PATH="/tmp/go/bin:$PATH"
 export GOPATH="/tmp/go/tmp"
 
@@ -106,9 +106,8 @@ if [ $isCN = "CN" ];then
     npm config set registry https://registry.npmmirror.com
 fi
 
-mkdir alist
 cd ./alist
 git clone https://github.com/Xhofe/alist
 git clone https://github.com/Xhofe/alist-web
 echo "* * */3 * * root sh bulid.sh" >> /var/spool/cron/root
-sh bulid.sh
+sh ./bulid.sh

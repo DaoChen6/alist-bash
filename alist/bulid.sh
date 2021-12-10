@@ -1,5 +1,5 @@
 # 构建alist前端
-cd ./alist-web
+cd /root/alist/alist-web
 git pull
 yarn && yarn build
 mv ./dist/* ../alist/public/
