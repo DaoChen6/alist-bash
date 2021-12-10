@@ -45,9 +45,9 @@ fi
 myip=`echo $ip_info | grep -Po 'ip\":"\K[^"]+'`;
 
 # Github 镜像
-if [ $isCN = "CN" ];then
+if [ $isCN = "CN" ]; then
     ping -c 2 github.com.cnpmjs.org > /dev/null 2>&1
-    if [ $? -eq 0 ];then
+    if [ $? -eq 0 ]; then
         mirror="https://github.com.cnpmjs.org"
     else
         mirror="https://github.com"
@@ -67,8 +67,8 @@ if ! command -v git >/dev/null 2>&1; then
 fi
 
 # 根据地域设置 GitHub 代理
-if [ $isCN = "CN" ];then
-    if [ -f "/root/.gitconfig" ];then
+if [ $isCN = "CN" ]; then
+    if [ -f "/root/.gitconfig" ]; then
         mv -f /root/.gitconfig /root/.gitconfig.bak >/dev/null 2>&1
     fi
     git config --global url.$mirror.insteadof https://github.com
@@ -95,7 +95,7 @@ export PATH="/tmp/go/bin:$PATH"
 export GOPATH="/tmp/go/tmp"
 
 # 根据地域设置 GOPROXY 镜像源
-if [ $isCN = "CN" ];then
+if [ $isCN = "CN" ]; then
     export GO111MODULE=on
     export GOPROXY="https://goproxy.cn"
 fi
@@ -112,7 +112,7 @@ tar xf
  /tmp/node-v$NODEJS_VERSION-linux-x64.tar.xz -C /tmp/
 export PATH="/tmp/node-v$NODEJS_VERSION-linux-x64/bin:$PATH"
 # 根据地域设置 npm 镜像源
-if [ $isCN = "CN" ];then
+if [ $isCN = "CN" ]; then
     npm config set registry https://registry.npmmirror.com
 fi
 
