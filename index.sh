@@ -26,6 +26,16 @@ if ! command -v git >/dev/null 2>&1; then
   fi
 fi
 
+# GCC 检查
+if ! command -v gcc >/dev/null 2>&1; then
+    if command -v yum >/dev/null 2>&1; then
+        yum -y install gcc gcc-c++
+    else
+        apt-get update
+        apt-get -y install gcc g++
+    fi
+fi
+
 # 安装 golang
 echo -e "\r\n${green_color} 安装Go …"
 curl -L https://dl.google.com/go/go$GO_VERSION.linux-amd64.tar.gz -o /tmp/go$GO_VERSION.linux-amd64.tar.gz $CURL_BAR
