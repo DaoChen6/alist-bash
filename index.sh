@@ -34,6 +34,18 @@ else
 fi
 myip=`echo $ip_info | grep -Po 'ip\":"\K[^"]+'`;
 
+# Github 镜像
+if [ $isCN = "CN" ];then
+    ping -c 2 github.com.cnpmjs.org > /dev/null 2>&1
+    if [ $? -eq 0 ];then
+        mirror="https://github.com.cnpmjs.org"
+    else
+        mirror="https://github.com"
+    fi
+else
+    mirror="https://github.com"
+fi
+
 # 检测 git
 if ! command -v git >/dev/null 2>&1; then
   if command -v yum >/dev/null 2>&1; then
@@ -81,7 +93,7 @@ fi
 # 安装 nodejs
 echo -e "\r\n${green_color} 安装NodeJS … ${default_color}"
 if [ $isCN = "CN" ]; then
-    curl -L https://npmmirror.com/mirrors/node/v$NODEJS_VERSION_VERSION/node-v$NODEJS_VERSION_VERSION-linux-x64.tar.xz -o /tmp/node-v$NODEJS_VERSION_VERSION-linux-x64.tar.xz $CURL_BAR
+    curl -L https://npmmirror.com/mirrors/node/v$NODEJS_VERSION/node-v$NODEJS_VERSION-linux-x64.tar.xz -o /tmp/node-v$NODEJS_VERSION-linux-x64.tar.xz $CURL_BAR
 else
     curl -L https://nodejs.org/dist/v$NODEJS_VERSION/node-v$NODEJS_VERSION-linux-x64.tar.xz -o /tmp/node-v$NODEJS_VERSION-linux-x64.tar.xz $CURL_BAR
 fi
@@ -92,18 +104,6 @@ export PATH="/tmp/node-v$NODEJS_VERSION-linux-x64/bin:$PATH"
 # 根据地域设置 npm 镜像源
 if [ $isCN = "CN" ];then
     npm config set registry https://registry.npmmirror.com
-fi
-
-# Github 镜像
-if [ $isCN = "CN" ];then
-    ping -c 2 github.com.cnpmjs.org > /dev/null 2>&1
-    if [ $? -eq 0 ];then
-        mirror="https://github.com.cnpmjs.org"
-    else
-        mirror="https://github.com"
-    fi
-else
-    mirror="https://github.com"
 fi
 
 mkdir alist
