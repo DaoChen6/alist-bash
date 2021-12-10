@@ -19,6 +19,16 @@ if [ ! -d "/tmp" ];then
     mkdir -p /tmp
 fi
 
+remind='\e[34m
+==========================================================================
+\r\n                        Alist 一键部署脚本\r\n
+  Alist是一款阿里云盘的目录文件列表程序，后端基于golang最好的http框架gin\r
+  前端使用vue和ant design\r  项目地址：https://github.com/Xhofe/alist\r\n
+                                         Script by 道辰 www.iflm.ml
+==========================================================================
+\e[0m';
+
+echo -e ${remind}
 # 检测 root 权限
 if [ "$(id -u)" != "0" ]; then
   echo -e "\r\n${red_color}请使用root权限运行本脚本" 1>&2
