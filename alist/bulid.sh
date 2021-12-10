@@ -1,3 +1,10 @@
+#!/bin/bash
+
+# Color
+red_color="\e[31m"
+green_color="\e[32m"
+default_color="\e[0m"
+
 # 构建alist前端
 cd /root/alist/alist-web
 git pull
