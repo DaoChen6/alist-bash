@@ -32,7 +32,7 @@ ldflags="\
 "
 go build -ldflags="$ldflags" alist.go
 
-mv alist ../
+mv alist ../alist-start
 
 # 守护进程
 echo -e "[Unit]
@@ -42,7 +42,7 @@ After=network.target\n
 [Service]\n
 Type=simple\n
 WorkingDirectory=/root/alist\n
-ExecStart=/root/alist/alist -conf data/config.json\n
+ExecStart=/root/alist/alist-start -conf data/config.json\n
 Restart=on-failure\n
  \n
 [Install]\n
