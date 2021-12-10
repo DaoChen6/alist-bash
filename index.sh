@@ -88,8 +88,8 @@ fi
 
 # 安装 golang
 echo -e "\r\n${green_color} 正在安装Go … ${default_color}"
-curl -L https://dl.google.com/go/go$GO_VERSION.linux-amd64.tar.gz -o /tmp/go$GO_VERSION.linux-amd64.tar.gz $CURL_BAR
-tar -zxvf /tmp/go$GO_VERSION.linux-amd64.tar.gz -C /tmp/
+curl -L https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz -o /tmp/go${GO_VERSION}.linux-amd64.tar.gz ${CURL_BAR}
+tar zxf /tmp/go${GO_VERSION}.linux-amd64.tar.gz -C /tmp/
 mkdir -p /tmp/go/tmp
 export PATH="/tmp/go/bin:$PATH"
 export GOPATH="/tmp/go/tmp"
@@ -103,14 +103,14 @@ fi
 # 安装 nodejs
 echo -e "\r\n${green_color} 正在安装NodeJS … ${default_color}"
 if [ $isCN = "CN" ]; then
-    curl -L https://npmmirror.com/mirrors/node/v$NODEJS_VERSION/node-v$NODEJS_VERSION-linux-x64.tar.xz -o /tmp/node-v$NODEJS_VERSION-linux-x64.tar.xz $CURL_BAR
+    curl -L https://npmmirror.com/mirrors/node/v${NODEJS_VERSION}/node-v${NODEJS_VERSION}-linux-x64.tar.xz -o /tmp/node-v${NODEJS_VERSION}-linux-x64.tar.xz ${CURL_BAR}
 else
-    curl -L https://nodejs.org/dist/v$NODEJS_VERSION/node-v$NODEJS_VERSION-linux-x64.tar.xz -o /tmp/node-v$NODEJS_VERSION-linux-x64.tar.xz $CURL_BAR
+    curl -L https://nodejs.org/dist/v${NODEJS_VERSION}/node-v${NODEJS_VERSION}-linux-x64.tar.xz -o /tmp/node-v${NODEJS_VERSION}-linux-x64.tar.xz ${CURL_BAR}
 fi
 
-tar xf
- /tmp/node-v$NODEJS_VERSION-linux-x64.tar.xz -C /tmp/
-export PATH="/tmp/node-v$NODEJS_VERSION-linux-x64/bin:$PATH"
+tar xf /tmp/node-v${NODEJS_VERSION}-linux-x64.tar.xz -C /tmp/
+export PATH="/tmp/node-v16.13.1-linux-x64/bin:$PATH"
+
 # 根据地域设置 npm 镜像源
 if [ $isCN = "CN" ]; then
     npm config set registry https://registry.npmmirror.com
