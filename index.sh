@@ -109,7 +109,7 @@ else
 fi
 
 tar xf /tmp/node-v$NODEJS_VERSION-linux-x64.tar.xz -C /tmp/
-export PATH="/tmp/node-v$NODEJS_VERSION-linux-x64/bin:$PATH"
+export PATH="/tmp/node-v${NODEJS_VERSION}-linux-x64/bin:$PATH"
 
 # 根据地域设置 npm 镜像源
 if [ $isCN = "CN" ];then
