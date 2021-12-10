@@ -62,7 +62,7 @@ if [ $isCN = "CN" ];then
         mv -f /root/.gitconfig /root/.gitconfig.bak >/dev/null 2>&1
     fi
     git config --global url.$mirror.insteadof https://github.com
-    echo -e "\r\n${green_color}设置临时 GitHub 代理 ...${default_color}"
+    echo -e "\r\n${green_color}正在设置临时 GitHub 代理 ...${default_color}"
     cat /root/.gitconfig
 fi
 
@@ -77,7 +77,7 @@ if ! command -v gcc >/dev/null 2>&1; then
 fi
 
 # 安装 golang
-echo -e "\r\n${green_color} 安装Go … ${default_color}"
+echo -e "\r\n${green_color} 正在安装Go … ${default_color}"
 curl -L https://dl.google.com/go/go$GO_VERSION.linux-amd64.tar.gz -o /tmp/go$GO_VERSION.linux-amd64.tar.gz $CURL_BAR
 tar -zxvf /tmp/go$GO_VERSION.linux-amd64.tar.gz -C /tmp/
 mkdir -p /tmp/go/tmp
@@ -91,7 +91,7 @@ if [ $isCN = "CN" ];then
 fi
 
 # 安装 nodejs
-echo -e "\r\n${green_color} 安装NodeJS … ${default_color}"
+echo -e "\r\n${green_color} 正在安装NodeJS … ${default_color}"
 if [ $isCN = "CN" ]; then
     curl -L https://npmmirror.com/mirrors/node/v$NODEJS_VERSION/node-v$NODEJS_VERSION-linux-x64.tar.xz -o /tmp/node-v$NODEJS_VERSION-linux-x64.tar.xz $CURL_BAR
 else
@@ -105,7 +105,9 @@ export PATH="/tmp/node-v$NODEJS_VERSION-linux-x64/bin:$PATH"
 if [ $isCN = "CN" ];then
     npm config set registry https://registry.npmmirror.com
 fi
+
 # 安装 yarn
+echo -e "\r\n${green_color}正在安装 yarn …${default_color}"
 if ! command -v yarn >/dev/null 2>&1; then
     if command -v yum >/dev/null 2>&1; then
         curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo
