@@ -31,3 +31,23 @@ ldflags="\
 -X 'github.com/Xhofe/alist/conf.GitTag=$gitTag' \
 "
 go build -ldflags="$ldflags" alist.go
+
+mv alist ../
+
+# 守护进程
+echo -e "[Unit]
+Description=alist\n
+After=network.target\n
+\n
+[Service]\n
+Type=simple\n
+WorkingDirectory=/root/alist\n
+ExecStart=/root/alist/alist -conf data/config.json\n
+Restart=on-failure\n
+ \n
+[Install]\n
+WantedBy=multi-user.target" >/usr/lib/systemd/system/alist.service
+
+systemctl daemon-reload
+systemctl restart alist
+systemctl status alist
