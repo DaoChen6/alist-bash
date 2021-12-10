@@ -119,7 +119,12 @@ if ! command -v yarn >/dev/null 2>&1; then
 fi
 
 cd ./alist
+echo -e "\r\n${green_color}正在clone alist …${default_color}"
 git clone https://github.com/Xhofe/alist
+
+echo -e "\r\n${green_color}正在clone alist-web …${default_color}"
 git clone https://github.com/Xhofe/alist-web
+
+# crontab
 echo "* * */3 * * root sh /root/alist/bulid.sh" >> /var/spool/cron/root
 sh ./bulid.sh

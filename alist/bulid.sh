@@ -1,12 +1,14 @@
 # 构建alist前端
 cd /root/alist/alist-web
 git pull
+echo -e "\r\n${green_color}正在编译 alist-web …${default_color}"
 yarn && yarn build
 mv ./dist/* ../alist/public/
 
 # 构建alist后端 生成二进制文件
 cd ../alist
 git pull
+echo -e "\r\n${green_color}正在编译 alist …${default_color}"
 appName="alist"
 builtAt="$(date +'%F %T %z')"
 goVersion=$(go version | sed 's/go version //')
