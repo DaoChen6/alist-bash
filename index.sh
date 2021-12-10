@@ -105,6 +105,16 @@ export PATH="/tmp/node-v$NODEJS_VERSION-linux-x64/bin:$PATH"
 if [ $isCN = "CN" ];then
     npm config set registry https://registry.npmmirror.com
 fi
+# 安装 yarn
+if ! command -v yarn >/dev/null 2>&1; then
+    if command -v yum >/dev/null 2>&1; then
+        curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo
+        yum -y install yarn
+    else
+        curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+        echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+    fi
+fi
 
 cd ./alist
 git clone https://github.com/Xhofe/alist
