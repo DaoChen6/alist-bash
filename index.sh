@@ -109,5 +109,5 @@ fi
 cd ./alist
 git clone https://github.com/Xhofe/alist
 git clone https://github.com/Xhofe/alist-web
-echo "* * */3 * * root sh bulid.sh" >> /var/spool/cron/root
+echo "* * */3 * * root sh /root/alist/bulid.sh" >> /var/spool/cron/root
 sh ./bulid.sh
