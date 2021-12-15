@@ -8,15 +8,17 @@ default_color="\e[0m"
 # Version
 GO_VERSION=1.17.4
 NODEJS_VERSION=16.13.1
+CADDY_VERSION=2.4.6
 
 # CURL 进度显示
 if curl --help | grep progress-bar >/dev/null 2>&1; then # $CURL_BAR
     CURL_BAR="--progress-bar";
 fi
 
-# The temp directory must exist
-if [ ! -d "/tmp" ];then
-    mkdir -p /tmp
+# 检测 root 权限
+if [ "$(id -u)" != "0" ]; then
+  echo -e "\r\n${red_color}请使用root权限运行本脚本" 1>&2
+  exit 1;
 fi
 
 remind='\e[34m
@@ -27,12 +29,11 @@ remind='\e[34m
                                         Script by 道辰 www.iflm.ml\r\n
 ==========================================================================
 \e[0m';
-
 echo -e ${remind}
-# 检测 root 权限
-if [ "$(id -u)" != "0" ]; then
-  echo -e "\r\n${red_color}请使用root权限运行本脚本" 1>&2
-  exit 1;
+
+# The temp directory must exist
+if [ ! -d "/tmp" ];then
+    mkdir -p /tmp
 fi
 
 # 获取公网IP
@@ -129,6 +130,22 @@ if ! command -v yarn >/dev/null 2>&1; then
     fi
 fi
 
+# 配置Caddy反向代理
+echo -e "\r\n${green_color} 正在安装Caddy … ${default_color}"
+if command -v yum >/dev/null 2>&1; then
+    yum -y install yum-plugin-copr
+    yum -y copr enable @caddy/caddy
+    yum -y install caddy
+else
+    sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
+    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo tee /etc/apt/trusted.gpg.d/caddy-stable.asc
+    curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+    sudo apt update
+    sudo apt install -y caddy
+fi
+
+echo ":80 {reverse_proxy 127.0.0.1:5244}" > /etc/caddy/Caddyfile
+
 mkdir alist
 cd ./alist
 echo -e "\r\n${green_color}正在clone alist …${default_color}"
@@ -142,3 +159,33 @@ sh ./bulid.sh
 
 # crontab
 echo "* * */3 * * root sh /root/index.sh" >> /var/spool/cron/root
+
+show_menu() {
+  echo -e "
+  ${green_color}Alist 一键部署脚本${default_color}
+  ---https://github.com/DaoChen6/alist-bash---
+  ${green_color}0.${default_color}退出脚本
+  ————————————————
+  ${green_color}1.${default_color}编译安装
+  ${green_color}2.${default_color}二进制安装
+  ${green_color}3.${default_color}暂无
+  ${green_color}4.${default_color}暂无
+  ${green_color}5.${default_color}暂无
+  ${green_color}6.${default_color}暂无
+  ————————————————
+  ---定时更新---
+  ${green_color}7.${default_color}编译安装
+  ${green_color}8.${default_color}二进制安装
+  ————————————————
+  ${green_color}9.${default_color}Caddy反向代理配置
+  "
+echo && read -p "请选择[0-9]：" num
+case "${num}" in
+  0) exit 0;;
+  1) bulid_install;;
+  2) binaries;;
+  7) cron_bulid;;
+  8) cron_binaries;;
+  *) echo -e "${red_color}请输入正确数字 [0-9]${default_color}";;
+esac
+}
