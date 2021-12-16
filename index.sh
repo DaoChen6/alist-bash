@@ -8,7 +8,6 @@ default_color="\e[0m"
 # Version
 GO_VERSION=1.17.4
 NODEJS_VERSION=16.13.1
-CADDY_VERSION=2.4.6
 
 # CURL 进度显示
 if curl --help | grep progress-bar >/dev/null 2>&1; then # $CURL_BAR
@@ -242,7 +241,7 @@ esac
 }
 
 # show
-if [[ $# > 0 ]]; then
+if [[ $# -gt 0 ]]; then
 		case $1 in
 		"build") bulid_install;;
 		"twobuild") binaries;;
@@ -251,5 +250,3 @@ if [[ $# > 0 ]]; then
 else
 		show_menu
 fi
-
-show_menu
