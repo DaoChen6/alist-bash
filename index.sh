@@ -240,3 +240,6 @@ case "${num}" in
   *) echo -e "${red_color}请输入正确数字 [0-9]${default_color}";;
 esac
 }
+
+# show
+show_menu
