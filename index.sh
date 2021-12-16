@@ -242,4 +242,14 @@ esac
 }
 
 # show
+if [[ $# > 0 ]]; then
+		case $1 in
+		"build") bulid_install;;
+		"twobuild") binaries;;
+		*) echo -e "${red_color}请输入正确命令${default_color}"
+		esac
+else
+		show_menu
+fi
+
 show_menu
