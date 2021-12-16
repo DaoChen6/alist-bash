@@ -236,6 +236,7 @@ case "${num}" in
   2) binaries;;
   7) cron_bulid;;
   8) cron_binaries;;
+	9) caddy_config;;
   *) echo -e "${red_color}请输入正确数字 [0-9]${default_color}";;
 esac
 }
