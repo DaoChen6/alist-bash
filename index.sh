@@ -202,13 +202,14 @@ else
     sudo apt update
     sudo apt install -y caddy
 fi
-}
 
 echo ":80 {reverse_proxy 127.0.0.1:5244}" > /etc/caddy/Caddyfile
+}
 
-
+cron_bulid() {
 # crontab
 echo "* * */3 * * root sh /root/index.sh" >> /var/spool/cron/root
+}
 
 show_menu() {
   echo -e "
