@@ -130,6 +130,62 @@ if ! command -v yarn >/dev/null 2>&1; then
         echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
     fi
 fi
+
+# git clone alist项目
+mkdir alist
+cd ./alist
+echo -e "\r\n${green_color}正在clone alist …${default_color}"
+git clone https://github.com/Xhofe/alist
+
+echo -e "\r\n${green_color}正在clone alist-web …${default_color}"
+git clone https://github.com/Xhofe/alist-web
+
+# 构建alist前端
+cd ./alist-web
+git pull
+echo -e "\r\n${green_color}正在编译 alist-web …${default_color}"
+yarn && yarn build
+mv ./dist/* ../alist/public/
+
+# 构建alist后端 生成二进制文件
+cd ../alist
+git pull
+echo -e "\r\n${green_color}正在编译 alist …${default_color}"
+appName="alist"
+builtAt="$(date +'%F %T %z')"
+goVersion=$(go version | sed 's/go version //')
+gitAuthor=$(git show -s --format='format:%aN <%ae>' HEAD)
+gitCommit=$(git log --pretty=format:"%h" -1)
+gitTag=$(git describe --long --tags --dirty --always)
+ldflags="\
+-w -s \
+-X 'github.com/Xhofe/alist/conf.BuiltAt=$builtAt' \
+-X 'github.com/Xhofe/alist/conf.GoVersion=$goVersion' \
+-X 'github.com/Xhofe/alist/conf.GitAuthor=$gitAuthor' \
+-X 'github.com/Xhofe/alist/conf.GitCommit=$gitCommit' \
+-X 'github.com/Xhofe/alist/conf.GitTag=$gitTag' \
+"
+go build -ldflags="$ldflags" alist.go
+
+mv alist ../alist-start
+
+# 守护进程
+echo -e "[Unit]
+Description=alist\n
+After=network.target\n
+\n
+[Service]\n
+Type=simple\n
+WorkingDirectory=/root/alist\n
+ExecStart=/root/alist/alist-start -conf data/config.json\n
+Restart=on-failure\n
+ \n
+[Install]\n
+WantedBy=multi-user.target" >/usr/lib/systemd/system/alist.service
+
+systemctl daemon-reload
+systemctl restart alist
+systemctl status alist
 }
 
 # 配置Caddy反向代理
@@ -150,16 +206,6 @@ fi
 
 echo ":80 {reverse_proxy 127.0.0.1:5244}" > /etc/caddy/Caddyfile
 
-mkdir alist
-cd ./alist
-echo -e "\r\n${green_color}正在clone alist …${default_color}"
-git clone https://github.com/Xhofe/alist
-
-echo -e "\r\n${green_color}正在clone alist-web …${default_color}"
-git clone https://github.com/Xhofe/alist-web
-
-wget https://cdn.jsdelivr.net/gh/DaoChen6/alist-bash@master/alist/bulid.sh
-sh ./bulid.sh
 
 # crontab
 echo "* * */3 * * root sh /root/index.sh" >> /var/spool/cron/root
