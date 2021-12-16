@@ -21,15 +21,15 @@ if [ "$(id -u)" != "0" ]; then
   exit 1;
 fi
 
-remind='\e[34m
-==========================================================================
-\r\n                        Alist 一键部署脚本\r\n
-  Alist是一款阿里云盘的目录文件列表程序，后端基于golang最好的http框架gin\r
-  前端使用vue和ant design\r  项目地址：https://github.com/Xhofe/alist\r\n
-                                        Script by 道辰 www.iflm.ml\r\n
-==========================================================================
-\e[0m';
-echo -e ${remind}
+#remind='\e[34m
+#==========================================================================
+#\r\n                        Alist 一键部署脚本\r\n
+#  Alist是一款阿里云盘的目录文件列表程序，后端基于golang最好的http框架gin\r
+#  前端使用vue和ant design\r  项目地址：https://github.com/Xhofe/alist\r\n
+#                                        Script by 道辰 www.iflm.ml\r\n
+#==========================================================================
+#\e[0m';
+#echo -e ${remind}
 
 # The temp directory must exist
 if [ ! -d "/tmp" ];then
@@ -57,6 +57,7 @@ else
     mirror="https://github.com"
 fi
 
+bulid_install() {
 # 检测 git
 if ! command -v git >/dev/null 2>&1; then
   if command -v yum >/dev/null 2>&1; then
@@ -129,8 +130,10 @@ if ! command -v yarn >/dev/null 2>&1; then
         echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
     fi
 fi
+}
 
 # 配置Caddy反向代理
+caddy_config() {
 echo -e "\r\n${green_color} 正在安装Caddy … ${default_color}"
 if command -v yum >/dev/null 2>&1; then
     yum -y install yum-plugin-copr
@@ -143,6 +146,7 @@ else
     sudo apt update
     sudo apt install -y caddy
 fi
+}
 
 echo ":80 {reverse_proxy 127.0.0.1:5244}" > /etc/caddy/Caddyfile
 
