@@ -131,8 +131,8 @@ if ! command -v yarn >/dev/null 2>&1; then
 fi
 
 # git clone alist项目
-mkdir alist
-cd ./alist
+mkdir /tmp/alist-build
+cd /tmp/alist-build
 echo -e "\r\n${green_color}正在clone alist …${default_color}"
 git clone https://github.com/Xhofe/alist
 
@@ -140,14 +140,14 @@ echo -e "\r\n${green_color}正在clone alist-web …${default_color}"
 git clone https://github.com/Xhofe/alist-web
 
 # 构建alist前端
-cd ../alist-web
+cd /tmp/alist-build/alist-web
 git pull
 echo -e "\r\n${green_color}正在编译 alist-web …${default_color}"
 yarn && yarn build
-mv ./dist/* ../alist/public/
+mv /tmp/alist-build/alist-web/dist/* /tmp/alist-build/alist/public/
 
 # 构建alist后端 生成二进制文件
-cd ../alist
+cd /tmp/alist-build/alist
 git pull
 echo -e "\r\n${green_color}正在编译 alist …${default_color}"
 appName="alist"
@@ -166,7 +166,7 @@ ldflags="\
 "
 go build -ldflags="$ldflags" alist.go
 
-mv alist ../alist-start
+mv alist /root/alist-start
 
 # 守护进程
 echo -e "[Unit]
@@ -175,8 +175,8 @@ After=network.target\n
 \n
 [Service]\n
 Type=simple\n
-WorkingDirectory=/root/alist\n
-ExecStart=/root/alist/alist-start -conf data/config.json\n
+WorkingDirectory=/root\n
+ExecStart=/root/alist-start -conf data/config.json\n
 Restart=on-failure\n
  \n
 [Install]\n
@@ -202,7 +202,7 @@ else
     sudo apt install -y caddy
 fi
 
-echo ":80 {reverse_proxy 127.0.0.1:5244}" > /etc/caddy/Caddyfile
+echo ":80 { reverse_proxy 127.0.0.1:5244 }" > /etc/caddy/Caddyfile
 }
 
 cron_bulid() {
