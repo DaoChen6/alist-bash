@@ -140,7 +140,7 @@ echo -e "\r\n${green_color}正在clone alist-web …${default_color}"
 git clone https://github.com/Xhofe/alist-web
 
 # 构建alist前端
-cd ./alist-web
+cd ../alist-web
 git pull
 echo -e "\r\n${green_color}正在编译 alist-web …${default_color}"
 yarn && yarn build
