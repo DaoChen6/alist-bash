@@ -30,12 +30,17 @@ fi
 #\e[0m';
 #echo -e ${remind}
 
+echo -e "${green_color}正在初始化……${default_color}"
+
 # The temp directory must exist
 if [ ! -d "/tmp" ];then
     mkdir -p /tmp
 fi
 
-echo -e "${green_color}正在初始化……${default_color}"
+if [ ! -d "/opt/alist" ];then
+    mkdir -p /opt/alist
+fi
+
 # 获取公网IP
 ip_info=`curl -s https://ip.cooluc.com`;
 if [[ $disable_mirror = "yes" ]];then
@@ -95,6 +100,7 @@ tar zxf /tmp/go${GO_VERSION}.linux-amd64.tar.gz -C /tmp/
 mkdir -p /tmp/go/tmp
 export PATH="/tmp/go/bin:$PATH"
 export GOPATH="/tmp/go/tmp"
+rm -rf /tmp/go${GO_VERSION}.linux-amd64.tar.gz
 
 # 根据地域设置 GOPROXY 镜像源
 if [ $isCN = "CN" ]; then
@@ -113,6 +119,7 @@ fi
 tar xf /tmp/node-v${NODEJS_VERSION}-linux-x64.tar.xz -C /tmp/
 mv /tmp/node-v${NODEJS_VERSION}-linux-x64 /tmp/nodejs
 export PATH="/tmp/nodejs/bin:$PATH"
+rm -rf /tmp/node-v${NODEJS_VERSION}-linux-x64.tar.xz
 
 # 根据地域设置 npm 镜像源
 if [ $isCN = "CN" ]; then
@@ -167,7 +174,7 @@ ldflags="\
 "
 go build -ldflags="$ldflags" alist.go
 
-mv alist /root/alist-start
+mv alist /opt/alist/alist-start
 
 # 守护进程
 echo -e "[Unit]
@@ -176,8 +183,8 @@ After=network.target\n
 \n
 [Service]\n
 Type=simple\n
-WorkingDirectory=/root\n
-ExecStart=/root/alist-start -conf data/config.json\n
+WorkingDirectory=/opt/alist\n
+ExecStart=/opt/alist/alist-start -conf data/config.json\n
 Restart=on-failure\n
  \n
 [Install]\n
@@ -208,7 +215,7 @@ echo ":80 { reverse_proxy 127.0.0.1:5244 }" > /etc/caddy/Caddyfile
 
 cron_bulid() {
 # crontab
-echo "* * */3 * * root curl -fsSL "https://cdn.jsdelivr.net/gh/DaoChen6/alist-bash/index.sh" | bash -s build" >> /var/spool/cron/root
+echo "* * */3 * * root curl -fsSL https://cdn.jsdelivr.net/gh/DaoChen6/alist-bash/index.sh | bash -s build" >> /var/spool/cron/root
 }
 
 show_menu() {
