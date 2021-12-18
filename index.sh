@@ -178,16 +178,16 @@ mv alist /opt/alist/alist-start
 
 # 守护进程
 echo -e "[Unit]
-Description=alist\n
-After=network.target\n
-\n
-[Service]\n
-Type=simple\n
-WorkingDirectory=/opt/alist\n
-ExecStart=/opt/alist/alist-start -conf data/config.json\n
-Restart=on-failure\n
- \n
-[Install]\n
+Description=alist
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/alist
+ExecStart=/opt/alist/alist-start -conf data/config.json
+Restart=on-failure
+
+[Install]
 WantedBy=multi-user.target" >/usr/lib/systemd/system/alist.service
 
 systemctl daemon-reload
@@ -210,7 +210,11 @@ else
     sudo apt install -y caddy
 fi
 
-echo ":80 { reverse_proxy 127.0.0.1:5244 }" > /etc/caddy/Caddyfile
+echo -e ":80 {
+reverse_proxy 127.0.0.1:5244
+}
+" > /etc/caddy/Caddyfile
+systemctl restart caddy
 }
 
 cron_bulid() {
