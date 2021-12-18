@@ -35,6 +35,7 @@ if [ ! -d "/tmp" ];then
     mkdir -p /tmp
 fi
 
+echo -e "${green_color}正在初始化……${default_color}"
 # 获取公网IP
 ip_info=`curl -s https://ip.cooluc.com`;
 if [[ $disable_mirror = "yes" ]];then
@@ -207,7 +208,7 @@ echo ":80 { reverse_proxy 127.0.0.1:5244 }" > /etc/caddy/Caddyfile
 
 cron_bulid() {
 # crontab
-echo "* * */3 * * root sh /root/index.sh" >> /var/spool/cron/root
+echo "* * */3 * * root curl -fsSL "https://cdn.jsdelivr.net/gh/DaoChen6/alist-bash/index.sh" | bash -s build" >> /var/spool/cron/root
 }
 
 show_menu() {
